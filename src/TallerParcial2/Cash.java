@@ -9,23 +9,24 @@ package TallerParcial2;
  *
  * @author JUANPABLO
  */
-public class Cash extends ShareAsset{
+public class Cash implements Asset{
     
     protected double amoun;
 
-    public Cash(double amoun, String symbol, double totalCost, double currentPrice) {
-        super(symbol, totalCost, currentPrice);
+    public Cash(double amoun) {
         this.amoun = amoun;
+    }
+    
+    
+
+    @Override
+    public double getMarketValue() {
+        return this.amoun;
     }
 
     @Override
     public double getProfit() {
         return 0;
-    }
-
-    @Override
-    public double getMarketValue() {
-        return this.amoun;
     }
 
     public double getAmoun() {
@@ -37,7 +38,15 @@ public class Cash extends ShareAsset{
     }
     
     
+
+    
+    }
+
+    
+
     
     
     
-}
+    
+    
+

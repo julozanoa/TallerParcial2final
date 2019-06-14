@@ -17,6 +17,8 @@ public class Stock extends ShareAsset{
         super(symbol, totalCost, currentPrice);
         this.totalShares = totalShares;
     }
+    
+    
 
     @Override
     public double getMarketValue(){
