@@ -1,12 +1,14 @@
 
 package TallerParcial2;
 import java.util.*;
+import java.io.*;
 
 
 public class Main {
     
-    public static void descifrar(String código){
+    public static String decodificar(String código){
         String d = código;
+        String z = "";
         int y = 0;
         for (int i = 0; i < d.length(); i++) {
             int x = ((int)d.charAt(i));
@@ -17,10 +19,11 @@ public class Main {
             }else if(x==67){
                 y = 90;
             }else{
-                y = x+3;
+                y = x-3;
             }
-            System.out.print((char)y);
-        }System.out.println("");
+            z += (char)y;
+        }
+        return z;
     }
     
     public static void main(String[] args) {
@@ -30,18 +33,53 @@ public class Main {
         ArrayList <DividentStock> divstocks = new ArrayList <>();
         ArrayList <MutualFund> mutualfunds = new ArrayList <>();
         
+        File f = new File("datos.txt");
+        
+        if (f.exists()) {
+            try{
+                Scanner input = new Scanner(f);
+                String[] Palabras;
+                while(input.hasNextLine()){
+                    Palabras = input.nextLine().split(",");
+                    if(decodificar(Palabras[0]).equals("CASH")){
+                        double a = Double.parseDouble(Palabras[1]);
+                        Cash c = new Cash(a);
+                        cashs.add(c);
+                    }else if(decodificar(Palabras[0]).equals("DIVSTOCK")){
+                        String s = decodificar(Palabras[1]);
+                        double c = Double.parseDouble(Palabras[2]);
+                        double t = Double.parseDouble(Palabras[3]);
+                        int ts = Integer.parseInt(Palabras[4]);
+                        double d = Double.parseDouble(Palabras[5]);
+                        DividentStock ds = new DividentStock(d,ts,s,t,c);
+                        divstocks.add(ds);
+                    }else if(decodificar(Palabras[0]).equals("STOCK")){
+                        String s = decodificar(Palabras[1]);
+                        double c = Double.parseDouble(Palabras[2]);
+                        double t = Double.parseDouble(Palabras[3]);
+                        int ts = Integer.parseInt(Palabras[4]);
+                        Stock k = new Stock(ts,s,t,c);
+                        stocks.add(k);
+                    }                   
+                }
+            }catch(FileNotFoundException ex){
+                
+            }
+        
+        }
+        
         if (stocks.size()> 0) {
             
         
         for (int i = 0; i < stocks.size(); i++) {
             
             System.out.println("Stocks:"); 
-            System.out.println("simbol: " + stocks.get(i).getSymbol());
+            System.out.println("symbol: " + stocks.get(i).getSymbol());
             System.out.println("total shares: " + stocks.get(i).getTotalShares());
             System.out.println("total cost: " + stocks.get(i).getTotalCost());
             System.out.println("current price: " + stocks.get(i).getCurrentPrice());
             System.out.println("market value: " + stocks.get(i).getMarketValue());
-            System.out.println("proft: " + stocks.get(i).getProfit());
+            System.out.println("profit: " + stocks.get(i).getProfit());
         }
         }
         if (divstocks.size()> 0) {
@@ -85,6 +123,8 @@ public class Main {
             for (int i = 0; i < cashs.size(); i++) {
                 System.out.println("cash:");
                 System.out.println("amoun: " + cashs.get(i).getAmoun());
+                System.out.println("market value "+ cashs.get(i).getMarketValue());
+                System.out.println("profit" + cashs.get(i).getProfit());
             }
             
         }
@@ -171,3 +211,4 @@ public class Main {
 }
     
 }
+    
